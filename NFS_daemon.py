@@ -1,11 +1,11 @@
 #!/usr/bin/python
 #
 # -------------------------------------------------------------------------------------------------
-# NFS_daemon.py
+# DFS_daemon.py
 # Created on: 2014-03-08 22:30:50.00000
-# Updated on: 2014-05-04 21:19:34.00000
+# Updated on: 2014-05-05 21:19:34.00000
 # Author: Ting Zhao (t.zhao2011@gmail.com)
-# Description: A daemon program for a simple Network File System. 
+# Description: A daemon program for a simple Distributed File System. 
 #              This is for handling requests (put, get, post and delete) from client to server
 # -------------------------------------------------------------------------------------------------
 
@@ -20,11 +20,54 @@ import web
 import os
 import platform
 import json
+import ctypes # in case the platform is windows
 
 #==========================================================================================================================
 # global variables
 myConfig = None
 numChunks = 0
+
+#==========================================================================================================================
+# nfsConfig class for NFS configurations, which is server-side only
+class nfsConfig:
+    
+    # initialize the configuration class
+    def __init__(self, conFile = None):
+        self.fileConfig = 'fileConfig.conf'
+        self.sectionConfig = 'defaultConfig'
+        self.ipaddr = '198.46.132.117'
+        self.port = '8080'
+        self.datadir = 'data'
+        self.maxsize = '25'
+        if conFile != None:
+            self.fileConfig = conFile
+        # Load the configuration from the file
+        self.tmpConfig = ConfigParser.ConfigParser()
+        self.tmpConfig.read(self.fileConfig)
+
+    # load the configuration from the specified section
+    def load(self, conSection = None):
+        if conSection != None:
+            self.sectionConfig = conSection
+        try:
+            logging.info("Reading from config file:")
+            for key, value in self.tmpConfig.items(self.sectionConfig):
+                setattr(self, key, value)
+                logging.info("	{0} = {1}".format(key, value))
+        except OSError as ex:
+            logging.error("Failed to read the provided config file: {0}".format(ex))
+			
+    # create an IP address for the webserver to use
+    def getIP(self):
+        return web.net.validip("{0}:{1}".format(self.ipaddr, self.port))
+
+    # get the maximum size and convert from kb to bytes
+    def getMaxSize(self):
+        return int(self.maxsize) * 1024
+
+    # get the specified directory and convert it to an absolute path
+    def getDataDir(self):
+        return os.path.abspath(self.datadir)
 
 #==========================================================================================================================
 # A function to check the status of chunks in the dataDir to see if they've been changed and return the number of chunks
@@ -41,20 +84,22 @@ def checkChunks(path):
             chunk = open(os.path.abspath("{0}/{1}".format(root, currentFile)), 'rb').read()
             # hash the chunk
             myMD5 = hashlib.md5(chunk).hexdigest()
-            mySHA1 = hashlib.sha1(chunk).hexdigest()
+            mySHA1 = hactypesshlib.sha1(chunk).hexdigest()
             # write the path
-            currentPath = "{0}/".format(myConfig.getDataDir())
             increNum = len(myMD5) // 2
             while not myMD5[increNum].isdigit():
                 increNum += 1
+            currentPath = "{0}/".format(myConfig.getDataDir())
+            dirpath = "{0}/".format(myConfig.getDataDir())
+            dirpath += "{0}/".format(myMD5[0:int(myMD5[increNum])])
             for i in range(0, len(myMD5), int(myMD5[increNum])):
                 currentPath += "{0}/".format(myMD5[i:i+int(myMD5[increNum])])
-			# check the filepath
+            # check the filepath
             if os.path.abspath(currentPath) != os.path.abspath(root):
                 # The hashed path cannot be matched to the original file.
                 logging.warning("The file has been modified!!!")
                 logging.info("	root:    {0}".format(os.path.abspath(root)))
-                logging.info("	currentPath: {0}".format(os.path.abspath(currentPath)))
+                loggingctypes.info("	currentPath: {0}".format(os.path.abspath(currentPath)))
                 checkChunk = False
             # check the filename
             if currentFile != ("{0}.obj".format(mySHA1)):
@@ -69,12 +114,66 @@ def checkChunks(path):
             # delete the files that have been modified by others
             else:
                 logging.warning("Deleting the files that has been modified by others!")
-                os.remove("{0}/{1}".format(root, currentFile))
+                shutil.rmtree(dirpath)
     return chunkCount
 
 #==========================================================================================================================
-# data class for creating, acquiring, updating and deleting file chunks.
+# index class for redirecting the get request to info class
+class index:
+    def GET(self):
+        raise web.seeother('/info')
+
+#==========================================================================================================================
+# info class for displaying server infomation.
+class info:
+
+    # GET function responds to request.get method from the client-side
+    def GET(self, paramStr = None):
+        global myConfig, numChunks
+        
+        path = myConfig.getDataDir()
+        # if /info/checkchunks is called, run the checkChunks function.
+        if(paramStr == 'checkchunks'):
+            numChunks = checkChunks(path)
+        info = {'numChunks': numChunks}
+        info['free'], info['freeNonSuper'], info['total'] = self.diskSpace(path)
+        try:
+            info['percFreeNoneSuper'] = 100 * (float(info['freeNonSuper']) / info['total'])
+        except ZeroDivisionError:
+            info['percFreeNoneSuper'] = 0
+        logging.info("Total: {0}\nFree: {1}\nFreeNonSuper: {2}\npercFreeNonSuper: {3}".format(info['total'], info['free'], info['freeNonSuper'], info['percFreeNoneSuper']))
+        web.header('Content-Type', 'application/json')
+        return json.dumps(info)
+
+    # diskSpace function to get free space and total space information (in megabytes)
+    def diskSpace(path):
+        free = 0
+        freeNonSuper = 0
+        total = 0
+        print "diskSpace({0}): platform = {1}".format(path, platform.system())
+        # if the platform is Windows
+        if platform.system() == 'Windows':
+            free = ctypes.c_ulonglong(0)
+            freeNonSuper = ctypes.c_ulonglong(0)
+            total = ctypes.c_ulonglong(0)
+            # "total" here is the total space available to the user, not total space on the disk.
+            # the server used for testing the program is a 64-bit system
+            ctypes.windll.kernel64.GetDiskFreeSpaceExW(ctypes.c_wchar_p(path),
+                                                       ctypes.pointer(freeNonSuper),
+                                                       ctypes.pointer(total),
+                                                       ctypes.pointer(free))
+            return (free.value/1024/1024, freeNonSuper.value/1024/1024, total.value/1024/1024)
+        else:
+            stat = os.statvfs(path)
+            free = stat.f_bfree * stat.f_frsize
+            freespfreeNonSuper = stat.f_bavail * stat.f_frsize
+            total = stat.f_blocks * stat.f_frsize
+            return (free/1024/1024, freeNonSuper/1024/1024, total/1024/1024)
+
+#==========================================================================================================================
+# Data class for acquiring, creating and deleting file chunks.
 class Data:
+    
     # GET function responds to request.get method from the client-side
     def GET(self, hashMD5, hashSHA1):
         global myConfig
@@ -105,7 +204,7 @@ class Data:
         logging.error("Something is weird about the provided: {0}".format(completePath))
         return web.internalerror()
     
-	# PUT function responds to request.put method from the client-side
+    # PUT function responds to request.put method from the client-side
     def PUT(self, hashMD5, hashSHA1):
         global myConfig, numChunks
 		
@@ -137,7 +236,7 @@ class Data:
         logging.error("Something is weird about the provided: {0}".format(completePath))
         return web.internalerror()
 
-	# DELETE function responds to request.delete method from the client-side
+    # DELETE function responds to request.delete method from the client-side
     def DELETE(self, hashMD5, hashSHA1):
         global myConfig, numChunks
         # build the hashed path 
@@ -210,7 +309,8 @@ class Data:
         # return an error if the provided codes doesn't match that of the chunk
         logging.error("Something is weird about the provided: {0}".format(completePath))
         return web.internalerror()
-		
+
+    # writePath function writes the file path with hashMd5 and hashSHA1
     def writePath(self, hashMD5, hashSHA1, type = "get"): # type in "get", "put" and "delete"
         global myConfig
         # build the hashed path
@@ -229,7 +329,8 @@ class Data:
         else:
             completePath += "{0}.obj".format(hashSHA1)
             return completePath
-		
+
+    # verifyChunk function verifies if the path can be converted to the hash values
     def verifyChunk(self, completePath, hashMD5, hashSHA1):
         # verify the chunk
         if not os.path.isfile(completePath):
@@ -246,3 +347,53 @@ class Data:
                 return True
             else:
                 return False
+
+#==========================================================================================================================
+# notFound and internalError functions are to handle errors
+def notFound():
+    return web.notfound("404 Not Found")
+
+def internalError():
+    return web.internalerror("500 Internal Server Error")
+
+#==========================================================================================================================
+# main function of the daemon program
+def main():
+    global myConfig, numChunks
+
+    # set the current basic config to INFO mode
+    logging.basicConfig(level=logging.INFO)
+
+    # parse the command line arguments using argparse module
+    argparser = argparse.ArgumentParser(description = "This is the daemon file of the system.")
+    argparser.add_argument('--fileConfig', help = "Configuration file (e.g. ip, port, datadir)")
+    argparser.add_argument('--sectionConfig', help = "Section in the configuration file to use (e.g. 'defaultConfig' by default)")
+    args = argparser.parse_args()
+    logging.info('Input arguments: \n	%s' % (str(args)))#(fileConfig = 'fileConfig.conf', sectionConfig = 'defaultConfig')
+
+    # pass the config params to nfsConfig function
+    myConfig = nfsConfig(args.fileConfig)
+    myConfig.load(args.sectionConfig)
+
+    # set up the webserver to handle requests.
+    # any url matches the regular expression will be sent to the corresponding class/function for handling
+    urls = ('/', 'index',
+            '/data/([0-9,a-f,A-F]+)/([0-9,a-f,A-F]+)', 'Data',
+            '/info', 'info',
+            '/info/(.*)', 'info')
+			
+    # create a web.application object providing the urls
+    app = web.application(urls, globals())
+    app.notfound = notFound # in case the app.notfound is called, notFound() function will work
+    app.internalerror = internalError # in case the app.internalerror is called, internalError() function will work
+    
+    # check the number of available chunks if there is any in the data directory
+    numChunks = checkChunks(myConfig.getDataDir())
+    logging.info('The data directory is: {0}'.format(myConfig.getDataDir()))
+    logging.info('The number of chunks is: {0}'.format(numChunks))
+    
+    # run the webserver
+    web.httpserver.runsimple(app.wsgifunc(), myConfig.getIP())
+
+if __name__ == "__main__":
+    main()
