@@ -117,18 +117,13 @@ class Data:
         # build the hashed path and read the file
         completePath = self.writePath(hashMD5, hashSHA1, "get")
         # raise error if no such file is found
-        if not os.path.isfile(completePath):
-            logging.info("File not found: {0}".format(completePath))
-            return self.NotFoundError()
-        else:
+        verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+        if verifyResult == True:
             with open(completePath, 'rb') as data:
                 fileContent = data.read()
-            # convert the hashed path and filename to hexadecimal numbers
-            myMD5 = hashlib.md5(fileContent).hexdigest()
-            mySHA1 = hashlib.sha1(fileContent).hexdigest()
-            # verify the fileContent
-            if myMD5 == hashMD5 and mySHA1 == hashSHA1:
                 return fileContent
+	else:
+            return self.NotFoundError()
         # return an error if the provided codes doesn't match that of the fileContent
         logging.error("Something is weird about the provided: {0}".format(completePath))
         return self.ServerError()
@@ -163,6 +158,8 @@ class Data:
         if verifyResult == True:
             fileCount += 1
             return "Successfully add the fileContent!"
+        else:
+            return self.NotFoundError()
         # return an error if the provided codes doesn't match that of the fileContent
         logging.error("Something is weird about the provided: {0}".format(completePath))
         return self.ServerError()
