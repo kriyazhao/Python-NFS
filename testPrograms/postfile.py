@@ -30,12 +30,12 @@ def main():
     
     myData = json.dumps({"insert":[[2, "ohYES"]], "delete": [[10, 15]], "modify": [[4,7, "ohNO"]]})
     r = requests.post(url, data = myData)
-    file = r.content
-    hashMD5 = hashlib.md5(file).hexdigest()
-    hashSHA1 = hashlib.sha1(file).hexdigest()
+    result = r.content
+    hashMD5 = hashlib.md5(result).hexdigest()
+    hashSHA1 = hashlib.sha1(result).hexdigest()
     print "Returned file with the new MD5 and SHA1"
     print "MD5:  {0}\n  SHA1: {1}".format(hashMD5, hashSHA1)
-    print file
+    print result
 
 if __name__ == "__main__":
     main()
