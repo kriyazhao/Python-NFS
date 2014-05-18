@@ -27,13 +27,13 @@ def main():
     print "Requested file:"
     print "MD5:  {0}\n  SHA1: {1}".format(args.md5, args.sha1)
     r = requests.get(url)
-    file = r.content
+    result = r.content
 
-    hashMD5 = hashlib.md5(file).hexdigest()
-    hashSHA1 = hashlib.sha1(file).hexdigest()
+    hashMD5 = hashlib.md5(result).hexdigest()
+    hashSHA1 = hashlib.sha1(result).hexdigest()
     print "Returned file:"
     print "MD5:  {0}\n  SHA1: {1}".format(hashMD5, hashSHA1)
-	print file
+	print result
 
 if __name__ == "__main__":
     main()
