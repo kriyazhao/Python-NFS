@@ -23,16 +23,16 @@ def main():
     args = parseArg.parse_args()
 
     # build the URL from the file content and request data
-    file = open(args.filename, 'rb').read()
+    result = open(args.filename, 'rb').read()
 
-    hashMD5 = hashlib.md5(file).hexdigest()
-    hashSHA1 = hashlib.sha1(file).hexdigest()
+    hashMD5 = hashlib.md5(result).hexdigest()
+    hashSHA1 = hashlib.sha1(result).hexdigest()
 
     url = "http://{0}:{1}/data/{2}/{3}" % (args.host, args.port, hashMD5, hashSHA1)
     headers = {'Content-Type': 'application/octet-stream'}
     print "MD5:  {0}\nSHA1: {1}".format(hashMD5, hashSHA1)
-    r = requests.put(url, data=file, headers=headers)
-    print r.text
+    r = requests.put(url, data=result, headers=headers)
+    print r.content
 
 if __name__ == "__main__":
     main()
