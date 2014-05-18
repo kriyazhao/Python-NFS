@@ -25,7 +25,8 @@ def main():
     url = "http://{0}:{1}/info/{2}".format(args.host, args.port, args.inquery)
     headers = {'Content-Type': 'application/octet-stream'}
     r = requests.get(url, headers=headers)
-    print json.loads(r)
+    for item in r.content:
+        print "{0} : {1}".format(item, r.content[item])
 
 if __name__ == "__main__":
     main()
