@@ -27,7 +27,7 @@ def main():
     print "Requested file:"
     print "MD5:  {0}\n  SHA1: {1}".format(args.md5, args.sha1)
     r = requests.delete(url)
-    print "Result: {0}".format(r.text)
+    print "Result: {0}".format(r.content)
 
 if __name__ == "__main__":
     main()
