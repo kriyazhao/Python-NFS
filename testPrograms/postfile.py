@@ -29,7 +29,8 @@ def main():
     print "MD5:  {0}\n  SHA1: {1}".format(args.md5, args.sha1)
     
     myData = json.dumps({"insert":[[2, "ohYES"]], "delete": [[10, 15]], "modify": [[4,7, "ohNO"]]})
-    r = requests.post(url, data = myData)
+    headers = {'content-type': 'application/json'}
+    r = requests.post(url, data = myData, headers = headers)
     result = r.content
     hashMD5 = hashlib.md5(result).hexdigest()
     hashSHA1 = hashlib.sha1(result).hexdigest()
