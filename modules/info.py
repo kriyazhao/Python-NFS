@@ -6,6 +6,9 @@ import hashlib
 import shutil
 import json
 
+# import customized modules
+import fileValidator
+
 #==========================================================================================================================
 # info class for displaying server infomation.
 class info:
