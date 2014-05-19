@@ -22,9 +22,9 @@ import nfsConfig
 
 #==========================================================================================================================
 # global variables
-myConfig = None
-fileCount = 0
-
+global myConfig
+global fileCount
+global session
 #==========================================================================================================================
 # nfsConfig class for NFS configurations, which is server-side only
 class nfsConfig:
@@ -67,12 +67,35 @@ class nfsConfig:
         return int(self.maxsize) * 1024
 
 #==========================================================================================================================
+# Login class handles post request of login
+class Login:
+    global session
+    def POST(self):
+        requestContent = json.loads(web.data())
+        if requestContent["username"] == "root" and requestContent["password"] == "202cb962ac59075b964b07152d234b70":
+            session.logged_in = True
+            return "login successfully!"
+        else:
+            return "login failed!"
+
+#==========================================================================================================================
+# Logout class handles get request of logout
+class Logout:
+    global session
+    def GET(self):
+        session.logged_in = False
+        session.kill()
+        return "logout successfully!"
+
+
+#==========================================================================================================================
 # Data class for acquiring, creating and deleting file fileContents.
 class Data:
-    global myConfig, fileCount
 
     # writePath function writes the file path with hashMd5 and hashSHA1
     def writePath(self, hashMD5, hashSHA1, writeType = "get"): # writeType in "get", "put" and "delete"
+        global myConfig, fileCount, session
+
         # build the hashed path
         increNum = len(hashMD5) // 2
         while not hashMD5[increNum].isdigit():
@@ -95,6 +118,8 @@ class Data:
 
     # verifyfileContent function verifies if the path can be converted to the hash values
     def verifyfileContent(self, completePath, hashMD5, hashSHA1):
+        global myConfig, fileCount, session
+   
         # verify the fileContent
         if not os.path.isfile(completePath):
             logging.info("File not found: {0}".format(completePath))
@@ -110,26 +135,31 @@ class Data:
                 return True
             else:
                 return False
-
+            
     # GET function responds to request.get method from the client-side
     def GET(self, hashMD5, hashSHA1):
-		
-        # build the hashed path and read the file
-        completePath = self.writePath(hashMD5, hashSHA1, "get")
-        # raise error if no such file is found
-        verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
-        if verifyResult == True:
-            with open(completePath, 'rb') as data:
-                fileContent = data.read()
-                return fileContent
+        global myConfig, fileCount, session
+	
+	if session.get('logged_in', True):	
+            # build the hashed path and read the file
+            completePath = self.writePath(hashMD5, hashSHA1, "get")
+            # raise error if no such file is found
+            verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            if verifyResult == True:
+                with open(completePath, 'rb') as data:
+                    fileContent = data.read()
+                    return fileContent
+    	    else:
+                return self.NotFoundError()
+            # return an error if the provided codes doesn't match that of the fileContent
+            logging.error("Something is weird about the provided: {0}".format(completePath))
+            return self.ServerError()
 	else:
-            return self.NotFoundError()
-        # return an error if the provided codes doesn't match that of the fileContent
-        logging.error("Something is weird about the provided: {0}".format(completePath))
-        return self.ServerError()
-    
+            return "please login first!" 
+            
     # PUT function responds to request.put method from the client-side
     def PUT(self, hashMD5, hashSHA1):
+        global myConfig, fileCount, session
 		
         # get the fileContent data from the client-side
         fileContent = web.data()
@@ -166,6 +196,7 @@ class Data:
 
     # DELETE function responds to request.delete method from the client-side
     def DELETE(self, hashMD5, hashSHA1):
+        global myConfig, fileCount, session
 
         # build the hashed path 
         completePath = self.writePath(hashMD5, hashSHA1)
@@ -184,6 +215,8 @@ class Data:
 
     # POST function responds to request.post method from the client-side
     def POST(self, hashMD5, hashSHA1):
+        global myConfig, fileCount, session
+
         # build the hashed path
         completePath = self.writePath(hashMD5, hashSHA1)
         # verify fileContent 
@@ -260,7 +293,7 @@ class index:
 #==========================================================================================================================
 # info class for displaying server infomation.
 class info:
-    global myConfig, fileCount
+    global myConfig, fileCount, session
     
     # GET function responds to request.get method from the client-side
     def GET(self, paramStr = None):
@@ -307,6 +340,8 @@ class info:
 #==========================================================================================================================
 # A function to check the status of current files in the dataDir to see if they've been changed and return the number of files
 def fileValidator(self, path):
+    global myConfig, fileCount, session
+
     fileCount = 0
     for root, dir, files in os.walk(path):
         logging.info("validateFiles: root:  {0}".format(root))
@@ -355,6 +390,7 @@ def fileValidator(self, path):
 #==========================================================================================================================
 # main function of the program
 def main():
+    global myConfig, fileCount, session
 
     # set the current basic config to INFO mode
     logging.basicConfig(level=logging.INFO)
@@ -373,12 +409,16 @@ def main():
     # any url matches the regular expression will be sent to the corresponding class/function for handling
     urls = ('/', 'index',
             '/data/([0-9,a-f,A-F]+)/([0-9,a-f,A-F]+)', 'Data',
+            '/login', 'Login',
+            '/logout', 'Logout',
             '/info', 'info',
             '/info/(.*)', 'info')
 			
     # create a web.application object providing the urls
     app = web.application(urls, globals())
-    
+    # set up session
+    web.config.debug = False
+    session = web.session.Session(app, web.session.DiskStore('session'))    
     # check the number of available fileContents if there is any in the data directory
     fileCount = fileValidator(myConfig.getDataDir())
     logging.info('The data directory is: {0}'.format(myConfig.getDataDir()))
