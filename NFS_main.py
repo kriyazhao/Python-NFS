@@ -160,122 +160,131 @@ class Data:
     # PUT function responds to request.put method from the client-side
     def PUT(self, hashMD5, hashSHA1):
         global myConfig, fileCount, session
-		
-        # get the fileContent data from the client-side
-        fileContent = web.data()
-        if len(fileContent) > myConfig.getMaxSize():
-            # The fileContent is wrong.  Return a 400 bad request error. Log info about the remote in the future.
-            logging.warning("fileContent size exceeds the limit!")
-            logging.info("actual fileContent size: {0}".format(len(fileContent)))
-            logging.info("config fileContent size: {0}".format(myConfig.getMaxSize()))
-            return "fileContent size exceeds the limit!"
-        # build the hashed path and write the file
-        completePath = self.writePath(hashMD5, hashSHA1, "put")
-        # create the path if not detected
-        if not os.path.exists(completePath):
-            os.makedirs(completePath)
-        completePath += "{0}.obj".format(hashSHA1)
-        # write the file if not detected
-        if not os.path.isfile(completePath):
-            logging.info("Adding a new fileContent at: {0}".format(completePath))
-            with open(completePath, 'wb') as data:
-                data.write(fileContent)
+
+	if session.get('logged_in', True):	
+            # get the fileContent data from the client-side
+            fileContent = web.data()
+            if len(fileContent) > myConfig.getMaxSize():
+                # The fileContent is wrong.  Return a 400 bad request error. Log info about the remote in the future.
+                logging.warning("fileContent size exceeds the limit!")
+                logging.info("actual fileContent size: {0}".format(len(fileContent)))
+                logging.info("config fileContent size: {0}".format(myConfig.getMaxSize()))
+                return "fileContent size exceeds the limit!"
+            # build the hashed path and write the file
+            completePath = self.writePath(hashMD5, hashSHA1, "put")
+            # create the path if not detected
+            if not os.path.exists(completePath):
+                os.makedirs(completePath)
+            completePath += "{0}.obj".format(hashSHA1)
+            # write the file if not detected
+            if not os.path.isfile(completePath):
+                logging.info("Adding a new fileContent at: {0}".format(completePath))
+                with open(completePath, 'wb') as data:
+                    data.write(fileContent)
+            else:
+                logging.info("file already exists: {0}".format(completePath))
+                return "file already exists!"
+            # read the file again and verify it is hashed correctly
+            verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            if verifyResult == True:
+                fileCount += 1
+                return "Successfully add the fileContent!"
+            else:
+                return self.NotFoundError()
+            # return an error if the provided codes doesn't match that of the fileContent
+            logging.error("Something is weird about the provided: {0}".format(completePath))
+            return self.ServerError()
         else:
-            logging.info("file already exists: {0}".format(completePath))
-            return "file already exists!"
-        # read the file again and verify it is hashed correctly
-        verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
-        if verifyResult == True:
-            fileCount += 1
-            return "Successfully add the fileContent!"
-        else:
-            return self.NotFoundError()
-        # return an error if the provided codes doesn't match that of the fileContent
-        logging.error("Something is weird about the provided: {0}".format(completePath))
-        return self.ServerError()
+            return "please login first!"
 
     # DELETE function responds to request.delete method from the client-side
     def DELETE(self, hashMD5, hashSHA1):
         global myConfig, fileCount, session
-
-        # build the hashed path 
-        completePath = self.writePath(hashMD5, hashSHA1)
-        # raise error if no such file is found
-        vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
-        if vertifyResult == True:
-            dirpath = self.writePath(hashMD5, hashSHA1, "delete")
-            shutil.rmtree(dirpath)
-            fileCount -= 1
-            return "Successfully delete the fileContent!"
+        
+	if session.get('logged_in', True):	
+            # build the hashed path 
+            completePath = self.writePath(hashMD5, hashSHA1)
+            # raise error if no such file is found
+            vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            if vertifyResult == True:
+                dirpath = self.writePath(hashMD5, hashSHA1, "delete")
+                shutil.rmtree(dirpath)
+                fileCount -= 1
+                return "Successfully delete the fileContent!"
+            else:
+                return self.NotFoundError()
+            # return an error if the provided codes doesn't match that of the fileContent
+            logging.error("Something is weird about the provided: {0}".format(completePath))
+            return self.ServerError()
         else:
-            return self.NotFoundError()
-        # return an error if the provided codes doesn't match that of the fileContent
-        logging.error("Something is weird about the provided: {0}".format(completePath))
-        return self.ServerError()
+            return "please login first!"
 
     # POST function responds to request.post method from the client-side
     def POST(self, hashMD5, hashSHA1):
         global myConfig, fileCount, session
-
-        # build the hashed path
-        completePath = self.writePath(hashMD5, hashSHA1)
-        # verify fileContent 
-        vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
-        if vertifyResult == True:
-            requestCon = web.data()
-            requestContent = json.loads(requestCon)
-            logging.info("requestContent: {0}".format(requestContent))
-            logging.info("type: {0}".format(type(requestContent)))
-            if "insert" in requestContent:
-                with open(completePath, 'r+') as data:
-                    oldfileContent = data.read()
-                    logging.info("insert oldfileContent: {0}".format(oldfileContent))
-                for i in requestContent["insert"]:
-                    newfileContent = oldfileContent[0:int(i[0])] + i[1] + oldfileContent[int(i[0])+1:]
-                    logging.info("insert newfileContent: {0}".format(newfileContent))
-                    with open(completePath, 'w+') as data:
-                        data.write(newfileContent)
-            if "modify" in requestContent:
-                with open(completePath, 'r+') as data:
-                    oldfileContent = data.read()				
-                for i in requestContent["modify"]:
-                    newfileContent = oldfileContent[0:int(i[0])] + i[2] + oldfileContent[int(i[1])+1:]
-                    with open(completePath, 'w+') as data:
-                        data.write(newfileContent)
-            if "delete" in requestContent:
-                with open(completePath, 'r+') as data:
-                    oldfileContent = data.read()
-                for i in requestContent["delete"]:
-                    newfileContent = oldfileContent[0:int(i[0])] + oldfileContent[int(i[1])+1:]
-                    with open(completePath, 'w+') as data:
-                        data.write(newfileContent)
-            logging.info("Successfully update the file!")
-            # rewrite hash path and filename for the updated file 
-            with open(completePath, 'rb') as data:
-                fileContent = data.read()
-            myMD5 = hashlib.md5(fileContent).hexdigest()
-            mySHA1 = hashlib.sha1(fileContent).hexdigest()
-            newPath = self.writePath(myMD5, mySHA1, "put")
-            if not os.path.exists(newPath):
-                os.makedirs(newPath)
-            newPath += "{0}.obj".format(hashSHA1)
-            if not os.path.isfile(newPath):
-                logging.info("Adding a new fileContent at: {0}".format(newPath))
-                with open(newPath, 'wb') as result:
-                    result.write(fileContent)
+        
+	if session.get('logged_in', True):	
+            # build the hashed path
+            completePath = self.writePath(hashMD5, hashSHA1)
+            # verify fileContent 
+            vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            if vertifyResult == True:
+                requestCon = web.data()
+                requestContent = json.loads(requestCon)
+                logging.info("requestContent: {0}".format(requestContent))
+                logging.info("type: {0}".format(type(requestContent)))
+                if "insert" in requestContent:
+                    with open(completePath, 'r+') as data:
+                        oldfileContent = data.read()
+                        logging.info("insert oldfileContent: {0}".format(oldfileContent))
+                    for i in requestContent["insert"]:
+                        newfileContent = oldfileContent[0:int(i[0])] + i[1] + oldfileContent[int(i[0])+1:]
+                        logging.info("insert newfileContent: {0}".format(newfileContent))
+                        with open(completePath, 'w+') as data:
+                            data.write(newfileContent)
+                if "modify" in requestContent:
+                    with open(completePath, 'r+') as data:
+                        oldfileContent = data.read()				
+                    for i in requestContent["modify"]:
+                        newfileContent = oldfileContent[0:int(i[0])] + i[2] + oldfileContent[int(i[1])+1:]
+                        with open(completePath, 'w+') as data:
+                            data.write(newfileContent)
+                if "delete" in requestContent:
+                    with open(completePath, 'r+') as data:
+                        oldfileContent = data.read()
+                    for i in requestContent["delete"]:
+                        newfileContent = oldfileContent[0:int(i[0])] + oldfileContent[int(i[1])+1:]
+                        with open(completePath, 'w+') as data:
+                            data.write(newfileContent)
+                logging.info("Successfully update the file!")
+                # rewrite hash path and filename for the updated file 
+                with open(completePath, 'rb') as data:
+                    fileContent = data.read()
+                myMD5 = hashlib.md5(fileContent).hexdigest()
+                mySHA1 = hashlib.sha1(fileContent).hexdigest()
+                newPath = self.writePath(myMD5, mySHA1, "put")
+                if not os.path.exists(newPath):
+                    os.makedirs(newPath)
+                newPath += "{0}.obj".format(hashSHA1)
+                if not os.path.isfile(newPath):
+                    logging.info("Adding a new fileContent at: {0}".format(newPath))
+                    with open(newPath, 'wb') as result:
+                        result.write(fileContent)
+                else:
+                    return "new file already exists!"
+                # delete the original path and file
+                dirpath = self.writePath(hashMD5, hashSHA1, "delete")
+                shutil.rmtree(dirpath)
+                logging.info("Deleting the old fileContent at: {0}".format(completePath))
+                return fileContent
             else:
-                return "new file already exists!"
-            # delete the original path and file
-            dirpath = self.writePath(hashMD5, hashSHA1, "delete")
-            shutil.rmtree(dirpath)
-            logging.info("Deleting the old fileContent at: {0}".format(completePath))
-            return fileContent
+                return self.NotFoundError()
+            # return an error if the provided codes doesn't match that of the fileContent
+            logging.error("Something is weird about the provided: {0}".format(completePath))
+            return self.ServerError()
         else:
-            return self.NotFoundError()
-        # return an error if the provided codes doesn't match that of the fileContent
-        logging.error("Something is weird about the provided: {0}".format(completePath))
-        return self.ServerError()
-    
+            return "please login first!"
+
     # NotFoundError function handles errors of no files found 
     def NotFoundError():
         return web.notfound("404 Not Found")
