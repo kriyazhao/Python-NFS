@@ -20,7 +20,7 @@ def main():
     parseArg.add_argument('--port', type=int, help = "host port")
     parseArg.add_argument('--md5', help = "md5 code to send")
     parseArg.add_argument('--sha1', help = "sha1 code to send")
-	parseArg.add_argument('--username', help = "username to send")
+    parseArg.add_argument('--username', help = "username to send")
     parseArg.add_argument('--password', help = "password code to send")	
     args = parseArg.parse_args()
     
