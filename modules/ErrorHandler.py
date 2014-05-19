@@ -1,4 +1,13 @@
+#==========================================================================================================================
+# import python modules
+import logging, argparse, ConfigParser
+import web, os, platform, ctypes
+import hashlib
+import shutil
+import json
 
+#==========================================================================================================================
+# ErrorHandler class to handle web errors
 class ErrorHandler:
 
     # NotFoundError function handles errors of no files found 
