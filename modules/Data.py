@@ -8,6 +8,7 @@ import json
 
 # import customized modules
 import fileValidator
+import ErrorHandler
 
 #==========================================================================================================================
 # Data class for acquiring, creating and deleting file fileContents.
@@ -44,7 +45,7 @@ class Data:
         # verify the fileContent
         if not os.path.isfile(completePath):
             logging.info("File not found: {0}".format(completePath))
-            return self.NotFoundError()
+            return ErrorHandler.NotFoundError()
         else:
             with open(completePath, 'rb') as data:
                 fileContent = data.read()
@@ -71,10 +72,10 @@ class Data:
                     fileContent = data.read()
                     return fileContent
     	    else:
-                return self.NotFoundError()
+                return ErrorHandler.NotFoundError()
             # return an error if the provided codes doesn't match that of the fileContent
             logging.error("Something is weird about the provided: {0}".format(completePath))
-            return self.ServerError()
+            return ErrorHandler.ServerError()
 	else:
             return "please login first!" 
             
@@ -111,10 +112,10 @@ class Data:
                 fileCount += 1
                 return "Successfully add the fileContent!"
             else:
-                return self.NotFoundError()
+                return ErrorHandler.NotFoundError()
             # return an error if the provided codes doesn't match that of the fileContent
             logging.error("Something is weird about the provided: {0}".format(completePath))
-            return self.ServerError()
+            return ErrorHandler.ServerError()
         else:
             return "please login first!"
 
@@ -133,10 +134,10 @@ class Data:
                 fileCount -= 1
                 return "Successfully delete the fileContent!"
             else:
-                return self.NotFoundError()
+                return ErrorHandler.NotFoundError()
             # return an error if the provided codes doesn't match that of the fileContent
             logging.error("Something is weird about the provided: {0}".format(completePath))
-            return self.ServerError()
+            return ErrorHandler.ServerError()
         else:
             return "please login first!"
 
@@ -199,21 +200,9 @@ class Data:
                 logging.info("Deleting the old fileContent at: {0}".format(completePath))
                 return fileContent
             else:
-                return self.NotFoundError()
+                return ErrorHandler.NotFoundError()
             # return an error if the provided codes doesn't match that of the fileContent
             logging.error("Something is weird about the provided: {0}".format(completePath))
-            return self.ServerError()
+            return ErrorHandler.ServerError()
         else:
             return "please login first!"
-
-    # NotFoundError function handles errors of no files found 
-    def BadRequestError():
-        return web.badrequest("400 Bad Request") 
-    
-    # NotFoundError function handles errors of no files found 
-    def NotFoundError():
-        return web.notfound("404 Not Found")
-
-    # ServerError function handles errors from the server side 
-    def ServerError():
-        return web.internalerror("500 Internal Server Error")
