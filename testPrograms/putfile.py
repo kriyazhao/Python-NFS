@@ -16,7 +16,7 @@ import json
 # main function
 def main():
     
-	# parse the command line arguments using argparse module
+    # parse the command line arguments using argparse module
     parseArg = argparse.ArgumentParser(description = "A client-side request to put a file to the server")
     parseArg.add_argument('--host', help = "host ip address")
     parseArg.add_argument('--port', type=int, help = "host port")
@@ -36,15 +36,13 @@ def main():
     file = open(args.filename, 'rb').read()
     hashMD5 = hashlib.md5(file).hexdigest()
     hashSHA1 = hashlib.sha1(file).hexdigest()
-	
-	# send PUT request
-    url2 = "http://{0}:{1}/data/{2}/{3}".format(args.host, args.port, hashMD5, hashSHA1)
+	    url2 = "http://{0}:{1}/data/{2}/{3}".format(args.host, args.port, hashMD5, hashSHA1)
     headers = {'Content-Type': 'application/octet-stream'}
     print "MD5:  {0}\nSHA1: {1}".format(hashMD5, hashSHA1)
     r = requests.put(url2, data=file, headers=headers)
     print r.text
 	
-	#logout
+    #logout
     url3 = "http://{0}:{1}/logout".format(args.host, args.port)
     o = requests.get(url3)
     print o.text
