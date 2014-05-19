@@ -6,6 +6,9 @@ import hashlib
 import shutil
 import json
 
+# import customized modules
+import fileValidator
+
 #==========================================================================================================================
 # Data class for acquiring, creating and deleting file fileContents.
 class Data:
