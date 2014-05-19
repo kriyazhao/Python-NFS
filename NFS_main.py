@@ -25,6 +25,7 @@ import Login
 import Logout
 import Data
 import fileValidator
+import ErrorHandler
 
 #==========================================================================================================================
 # main function of the program
