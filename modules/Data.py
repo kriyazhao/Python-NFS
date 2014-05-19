@@ -207,6 +207,10 @@ class Data:
             return "please login first!"
 
     # NotFoundError function handles errors of no files found 
+    def BadRequestError():
+        return web.badrequest("400 Bad Request") 
+    
+    # NotFoundError function handles errors of no files found 
     def NotFoundError():
         return web.notfound("404 Not Found")
 
