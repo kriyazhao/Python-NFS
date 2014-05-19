@@ -14,7 +14,7 @@ import hashlib
 # main function
 def main():
     
-	# parse the command line arguments using argparse module
+    # parse the command line arguments using argparse module
     parseArg = argparse.ArgumentParser(description = "A client-side request to get a file to the server")
     parseArg.add_argument('--host', help = "host ip address")
     parseArg.add_argument('--port', type=int, help = "host port")
@@ -24,7 +24,7 @@ def main():
     parseArg.add_argument('--password', help = "password code to send")	
     args = parseArg.parse_args()
     
-	# login
+    # login
     url1 = "http://{0}:{1}/login".format(args.host, args.port)
     hashPwd = hashlib.md5(args.password).hexdigest()
     payload = json.dumps({"username":args.username, "password":hashPwd})
@@ -38,7 +38,7 @@ def main():
     r = requests.get(url2)
     file = r.content
 	
-	# logout
+    # logout
     url3 = "http://{0}:{1}/logout".format(args.host, args.port)
     o = requests.get(url3)
     print o.text
