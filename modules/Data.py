@@ -9,6 +9,7 @@ import json
 # import customized modules
 import fileValidator
 import ErrorHandler
+import Encryption
 
 #==========================================================================================================================
 # Data class for acquiring, creating and deleting file fileContents.
@@ -20,9 +21,9 @@ class Data:
 	
 	if session.get('logged_in', True):	
             # build the hashed path and read the file
-            completePath = self.writePath(hashMD5, hashSHA1, "get")
+            completePath = Encryption.writePath(hashMD5, hashSHA1, "get")
             # raise error if no such file is found
-            verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            verifyResult = Encryption.verifyfileContent(completePath, hashMD5, hashSHA1)
             if verifyResult == True:
                 with open(completePath, 'rb') as data:
                     fileContent = data.read()
@@ -49,7 +50,7 @@ class Data:
                 logging.info("config fileContent size: {0}".format(myConfig.getMaxSize()))
                 return "fileContent size exceeds the limit!"
             # build the hashed path and write the file
-            completePath = self.writePath(hashMD5, hashSHA1, "put")
+            completePath = Encryption.writePath(hashMD5, hashSHA1, "put")
             # create the path if not detected
             if not os.path.exists(completePath):
                 os.makedirs(completePath)
@@ -63,7 +64,7 @@ class Data:
                 logging.info("file already exists: {0}".format(completePath))
                 return "file already exists!"
             # read the file again and verify it is hashed correctly
-            verifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            verifyResult = Encryption.verifyfileContent(completePath, hashMD5, hashSHA1)
             if verifyResult == True:
                 fileCount += 1
                 return "Successfully add the fileContent!"
@@ -81,11 +82,11 @@ class Data:
         
 	if session.get('logged_in', True):	
             # build the hashed path 
-            completePath = self.writePath(hashMD5, hashSHA1)
+            completePath = Encryption.writePath(hashMD5, hashSHA1)
             # raise error if no such file is found
-            vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            vertifyResult = Encryption.verifyfileContent(completePath, hashMD5, hashSHA1)
             if vertifyResult == True:
-                dirpath = self.writePath(hashMD5, hashSHA1, "delete")
+                dirpath = Encryption.writePath(hashMD5, hashSHA1, "delete")
                 shutil.rmtree(dirpath)
                 fileCount -= 1
                 return "Successfully delete the fileContent!"
@@ -103,9 +104,9 @@ class Data:
         
 	if session.get('logged_in', True):	
             # build the hashed path
-            completePath = self.writePath(hashMD5, hashSHA1)
+            completePath = Encryption.writePath(hashMD5, hashSHA1)
             # verify fileContent 
-            vertifyResult = self.verifyfileContent(completePath, hashMD5, hashSHA1)
+            vertifyResult = Encryption.verifyfileContent(completePath, hashMD5, hashSHA1)
             if vertifyResult == True:
                 requestCon = web.data()
                 requestContent = json.loads(requestCon)
@@ -140,7 +141,7 @@ class Data:
                     fileContent = data.read()
                 myMD5 = hashlib.md5(fileContent).hexdigest()
                 mySHA1 = hashlib.sha1(fileContent).hexdigest()
-                newPath = self.writePath(myMD5, mySHA1, "put")
+                newPath = Encryption.writePath(myMD5, mySHA1, "put")
                 if not os.path.exists(newPath):
                     os.makedirs(newPath)
                 newPath += "{0}.obj".format(hashSHA1)
@@ -151,7 +152,7 @@ class Data:
                 else:
                     return "new file already exists!"
                 # delete the original path and file
-                dirpath = self.writePath(hashMD5, hashSHA1, "delete")
+                dirpath = Encryption.writePath(hashMD5, hashSHA1, "delete")
                 shutil.rmtree(dirpath)
                 logging.info("Deleting the old fileContent at: {0}".format(completePath))
                 return fileContent
