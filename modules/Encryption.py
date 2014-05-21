@@ -1,6 +1,17 @@
+#==========================================================================================================================
+# import python modules
+import logging, argparse, ConfigParser
+import web, os, platform, ctypes
+import hashlib
+import shutil
+import json
 
+# import customized modules
+import fileValidator
+import ErrorHandler
 
-#
+#==========================================================================================================================
+# Encryption class to encrypt path based on the provided hash codes.
 class Encryption:
 
     # writePath function writes the file path with hashMd5 and hashSHA1
