@@ -6,6 +6,10 @@ import hashlib
 import shutil
 import json
 
+# import customized modules
+import ErrorHandler
+import Encryption
+
 #==========================================================================================================================
 # A function to check the status of current files in the dataDir to see if they've been changed and return the number of files
 def fileValidator(self, path):
@@ -25,14 +29,8 @@ def fileValidator(self, path):
             myMD5 = hashlib.md5(fileContent).hexdigest()
             mySHA1 = hashlib.sha1(fileContent).hexdigest()
             # write the path with a strategy
-            increNum = len(myMD5) // 2
-            while not myMD5[increNum].isdigit():
-                increNum += 1
-            currentPath = "{0}/".format(myConfig.getDataDir())
-            dirpath = "{0}/".format(myConfig.getDataDir())
-            dirpath += "{0}/".format(myMD5[0:int(myMD5[increNum])])
-            for i in range(0, len(myMD5), int(myMD5[increNum])):
-                currentPath += "{0}/".format(myMD5[i:i+int(myMD5[increNum])])
+            currentPath = Encryption.writePath(myMD5, mySHA1, "get")
+            dirpath = Encryption.writePath(myMD5, mySHA1, "delete")
             # check the filepath
             if os.path.abspath(currentPath) != os.path.abspath(root):
                 # The hashed path cannot be matched to that of the original file.
