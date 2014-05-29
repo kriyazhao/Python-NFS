@@ -1,9 +1,0 @@
-TYPE IN
-
-python DFS_daemon.py
-
-OR
-
-python DFS_daemon.py --fileConfig fileConfig.conf --sectionConfig defaultConfig
-
-TO START

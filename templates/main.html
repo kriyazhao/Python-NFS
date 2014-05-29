@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Mini Distributed File System</title>
+<link rel="stylesheet" href="static/css/style.css" media="screen" type="text/css" />
+<script src="static/js/jquery-1.9.1.min.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script src="static/js/donetyping.js"></script>
+<script src="static/js/popup.js"></script>
+<script src="static/js/filelist.js"></script>
+<script src="static/js/fileupload2.js"></script>
+<script src="static/js/checklogin.js"></script>
+<script src="static/js/logout.js"></script>
+<script src="static/js/filerequest.js"></script>
+<script src="static/js/fileextract.js"></script>
+<script src="static/js/dropdown.js"></script>
+<script type="text/javascript">
+var headingstr = "<table class=\"reference\"><tbody><tr><th>File name</th><th>Create on</th><th>Last update</th><th>Action</th></tr>";
+var contentstr = "";
+var endingstr1 = "</tbody></table>";
+var endingstr2 = "<div id=\"addfile\"><input type=\"button\" name=\"file_upload\" id=\"file_upload\" value=\"add file\"></div>";
+var strtype;
+</script>
+</head>
+<body>
+<div class="title">
+    <div class="titlename">Mini Distributed File System</div>
+    <div class="titlename2">Developed by Ting Zhao</div>
+</div>
+<div class="top">
+<div class="topleft">
+    <div class="usersection">
+        <h1>Log-in</h1>
+        <form>
+        <input type="text" name="user" class="username" placeholder="Username">
+        <input type="password" name="pass" class="password" placeholder="Password">
+        <input type="button" name="register" class="register" value="register">
+        <input type="button" name="login" class="login" value="login">
+        </form>
+        <div class="login-help">
+        <a href="#">Forgot Password</a>
+        </div>
+    </div>
+    <div class="codeentry">
+        <h1>Extract file</h1>
+        <form>
+        <input type="text" name="md5" class="md5" placeholder="MD5">
+        <input type="text" name="sha1" class="sha1" placeholder="SHA1">
+        <input type="button" name="extract" class="extract" value="extract">
+        </form>
+        
+    </div>
+</div>
+<div class="filelist">
+
+</div>
+</div>
+</div>
+<div class="fileview">
+<div class="editbar">File Name</div>
+<textarea class="filecontent" rows="10" cols="100" readonly>
+</textarea>
+<div class="filestatus">view file here</div>
+</div>
+</body>
+</html>
