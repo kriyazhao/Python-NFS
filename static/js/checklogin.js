@@ -116,7 +116,6 @@ $(document).ready(function(){
 					if (json[0] == "empty"){			 
 						strtype = 1;
 						$(endingstr).appendTo(".filelist");
-						//$(".filelist").html(headingstr + endingstr1 + endingstr2);
 					} else {
 						for(var i=0; i<json.length; i++){
 							contentstr += "<tr><td class=\"first_"+i.toString()+"\" id=\""+json[i].filename+"\">"+ json[i].filename +"</td>";
@@ -131,13 +130,9 @@ $(document).ready(function(){
 						strtype = 2;
 						$(contentstr).appendTo("tbody");
 						$(endingstr).appendTo(".filelist");
-
-						//$(".filelist").html(headingstr + contentstr + endingstr1 + endingstr2);
 					}
 				}
-				
-				
 			}
 		});
-}
+	}
 });
