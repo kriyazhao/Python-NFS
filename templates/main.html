@@ -8,19 +8,13 @@
 <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
 <script src="static/js/donetyping.js"></script>
 <script src="static/js/popup.js"></script>
-<script src="static/js/filelist.js"></script>
-<script src="static/js/fileupload2.js"></script>
+<script src="static/js/fileupload.js"></script>
 <script src="static/js/checklogin.js"></script>
-<script src="static/js/logout.js"></script>
 <script src="static/js/filerequest.js"></script>
 <script src="static/js/fileextract.js"></script>
 <script src="static/js/dropdown.js"></script>
+<script src="static/js/logout.js"></script>
 <script type="text/javascript">
-var headingstr = "<table class=\"reference\"><tbody><tr><th>File name</th><th>Create on</th><th>Last update</th><th>Action</th></tr>";
-var contentstr = "";
-var endingstr1 = "</tbody></table>";
-var endingstr2 = "<div id=\"addfile\"><input type=\"button\" name=\"file_upload\" id=\"file_upload\" value=\"add file\"></div>";
-var strtype;
 </script>
 </head>
 <body>
@@ -52,10 +46,18 @@ var strtype;
         
     </div>
 </div>
-<div class="filelist">
-
-</div>
-</div>
+	<div class="filelist">
+		<table class="reference">
+			<tbody>
+				<tr>
+					<th>File name</th>
+					<th>Create on</th>
+					<th>Last update</th>
+					<th>Action</th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 <div class="fileview">
 <div class="editbar">File Name</div>
