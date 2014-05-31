@@ -1,5 +1,5 @@
 $(document).on('click','.extract', function(){
-// retrieve file from MD5 and SHA1 codes
+    // retrieve file from MD5 and SHA1 codes
     var md5code = $(".md5").val();
 	var sha1code = $(".sha1").val();
 	if (md5code.length > 0 && sha1code.length > 0){
@@ -26,6 +26,5 @@ $(document).on('click','.extract', function(){
 		});
     } else {
 	    popup("MD5 or SHA1 cannot be empty!")
-	}
-  	
+    }
 });
