@@ -15,12 +15,16 @@ class TestCheckStatus(unittest.TestCase):
         session.logged_in = True
         session.username = "kriyazhao"
         response = requests.get("/checklogin")
+        session.logged_in = False
+        session.kill()
         self.assertEqual(response.r, 1)
     
     def test_login_success_return_username(self):
         session.logged_in = True
         session.username = "kriyazhao"
         response = requests.get("/checklogin")
+        session.logged_in = False
+        session.kill()
         self.assertEqual(response.username, "kriyazhao")
     
 if __name__ == "__main__":
