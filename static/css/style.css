@@ -47,7 +47,7 @@ body {
   border-radius: 2px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: scroll;
   float:left;
   margin-left:10px;
 }
@@ -126,18 +126,19 @@ body {
   font-size: 12px;
 }
 
-.reference {
+table.reference {
   border-collapse: collapse;
-  width: 100%;
+  table-layout: auto;
+  width: 560px;
 }
 
 .reference td {
   border: 1px solid #d4d4d4;
-  padding: 5px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  vertical-align: top;
-  font-size: 15px;  
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 15px;
 }
 
 .reference th{
@@ -153,6 +154,18 @@ body {
 
 .reference tr:nth-child(odd) {
   background-color: #f1f1f1;
+}
+
+.reference tr td:nth-child(1), tr th:nth-child(1){
+  width: 60%;  
+}
+
+.reference tr td:nth-child(2), tr th:nth-child(2), .reference tr td:nth-child(3), tr th:nth-child(3){
+  width: 20%;  
+}
+
+.reference tr td:nth-child(4), tr th:nth-child(4){
+  width: 100%; 
 }
 
 .register:hover, .login:hover, .logout:hover, .extract:hover, .edituser:hover {
@@ -287,16 +300,23 @@ a:hover {
 	text-decoration: none;
 }
 
+#zone-bar{
+  width:90px;
+}
+
+#zone-bar ul {
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}
 
 #zone-bar ul li {
-  height: 40px;
+  height: 35px;
   position: relative;
   float: left;
-  margin-right: 10px;
   background: #4d90fe;
 }
-#zone-bar ul li :hover{
-}
+
 #zone-bar ul li a {
 	display: block;
 	float: left;
@@ -312,11 +332,13 @@ a:hover {
 	border: 0px;
 	text-shadow: 0 1px rgba(0,0,0,0.1);
 	}
-	#zone-bar ul li a:hover {
-		border: 0px;
-		text-shadow: 0 1px rgba(0,0,0,0.3);
-		background: url(../img/navright.png) center right no-repeat;
-	}
+	
+#zone-bar ul li a:hover {
+	border: 0px;
+	text-shadow: 0 1px rgba(0,0,0,0.3);
+	background: url(../img/navright.png) center right no-repeat;
+}
+
 #zone-bar ul li a h1 {
 	display: block;
 	float: left;
@@ -328,16 +350,19 @@ a:hover {
 	border: 0px;
 	text-shadow: 0 1px rgba(0,0,0,0.1);
 	color: white;
-	}
-	#zone-bar ul li a h1:hover {
-		border: 0px;
-		text-shadow: 0 1px rgba(0,0,0,0.3);
-		background-color: #4d90fe;
-		}
-	#zone-bar ul li a span {
-		position: relative;
-		top: 6px;
-	}
+}
+
+#zone-bar ul li a h1:hover {
+	border: 0px;
+	text-shadow: 0 1px rgba(0,0,0,0.3);
+	background-color: #4d90fe;
+}
+
+#zone-bar ul li a span {
+	position: relative;
+	top: 6px;
+}
+
 #zone-bar ul li ul {
 	display: none;
 	position: absolute;
@@ -347,23 +372,24 @@ a:hover {
 	background: white;
 	padding: 0px 0 0 0;
 	z-index: 9999;
-	}
-	#zone-bar ul li ul li {
-		float: none;
-		padding: 0; margin: 0;
-		height: 100%;
-		z-index: 9999;
+}
+
+#zone-bar ul li ul li {
+	float: none;
+	padding: 0; margin: 0;
+	height: 100%;
+	z-index: 9999;
+}
+
+#zone-bar ul li ul li:hover {
+	background: #4d90fe;
+}
+
+#zone-bar ul li ul li a {
+	display: block;
+	width: 70px;
+}
 		
-	}
-	#zone-bar ul li ul li:hover {
-		background: #4d90fe;
-		}
-		#zone-bar ul li ul li a {
-			display: block;
-			width: 70px;
-			
-		}
-		#zone-bar ul li ul li a:hover {
-			background: #4d90fe;
-			
-		}
+#zone-bar ul li ul li a:hover {
+	background: #4d90fe;	
+}

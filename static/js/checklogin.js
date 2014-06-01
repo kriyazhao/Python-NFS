@@ -80,26 +80,52 @@ $(document).ready(function(){
 		}
 	});
 	
-	var msg;
 	//write logged-in div
 	function writeloggedin(results){
-		
-		msg = "<div class=\"welcomeuser\">welcome  &nbsp;";
-		msg += results['un'] + "</div>";
-		msg += '<form class="form2"><input type="button" name="edituser" class="edituser" value="edit profile">';
-		msg += '<input type="button" name="logout" class="logout" value="logout"></form>';
-		$(".usersection").html(msg);
+		$(".usersection").html($("<div/>").html("welcome  &nbsp;"+results['un']).attr("class", "welcomeuser"));
+		$("<form/>").attr("class", "form2").appendTo(".usersection");
+		$("<input/>").attr({
+			type:"button",
+			name:"edituser",
+			class:"edituser",
+			value:"edit profile"
+		}).appendTo(".form2");
+		$("<input/>").attr({
+			type:"button",
+			name:"logout",
+			class:"logout",
+			value:"logout"
+		}).appendTo(".form2");
 	}
 
 	//write login div
 	function writelogin(){
-		msg = "<h1>Log-in</h1>";
-		msg +="<form><input type=\"text\" name=\"user\" class=\"username\" placeholder=\"Username\">" +
-				"<input type=\"password\" name=\"pass\" class=\"password\" placeholder=\"Password\">" +
-				"<input type=\"button\" name=\"register\" class=\"register\" value=\"register\">" +
-				"<input type=\"button\" name=\"login\" class=\"login\" value=\"login\"></form>" +
-				"<div class=\"login-help\"><a href=\"#\">Forgot Password</a></div>";
-		$(".usersection").html(msg);
+		$(".usersection").html($("<h1/>").html("Log-in"));
+		$("<form/>").attr("class", "form1").appendTo(".usersection");
+		$("<input/>").attr({
+			type:"text",
+			name:"user",
+			class:"username",
+			placeholder:"Username"
+		}).appendTo(".form1");
+		$("<input/>").attr({
+			type:"password",
+			name:"pass",
+			class:"password",
+			placeholder:"Password"
+		}).appendTo(".form1");
+		$("<input/>").attr({
+			type:"button",
+			name:"register",
+			class:"register",
+			value:"register"
+		}).appendTo(".form1");
+		$("<input/>").attr({
+			type:"button",
+			name:"login",
+			class:"login",
+			value:"login"
+		}).appendTo(".form1");
 	}
 
 	//write file list
@@ -109,30 +135,54 @@ $(document).ready(function(){
 			success:function(results){
 				var json = eval(results);
 				if (json[0] == ""){
-					strtype = 0;
 				} else {
-					endingstr = "<div id=\"addfile\"><input type=\"button\" name=\"file_upload\" id=\"file_upload\" value=\"add file\"></div>"
 					contentstr = "";
 					if (json[0] == "empty"){			 
-						strtype = 1;
-						$(endingstr).appendTo(".filelist");
-						//$(".filelist").html(headingstr + endingstr1 + endingstr2);
+						$("<div/>").attr("id", "addfile").appendTo(".filelist");
+						$("<input/>").attr({
+							type:"button",
+							name:"file_upload",
+							id:"file_upload",
+							value:"add file"
+						}).appendTo("#addfile");
 					} else {
 						for(var i=0; i<json.length; i++){
-							contentstr += "<tr><td class=\"first_"+i.toString()+"\" id=\""+json[i].filename+"\">"+ json[i].filename +"</td>";
-							contentstr += "<td class=\"second_"+i.toString()+"\" id=\""+json[i].createon+"\">"+ json[i].createon +"</td>";
-							contentstr += "<td class=\"third_"+i.toString()+"\" id=\""+json[i].updateon+"\">"+ json[i].updateon +"</td>";
-							contentstr += "<td><div id=\"zone-bar\"><ul><li><a href=\"#\"><span><h1>Action &nbsp;</h1><em class=\"opener-world\">" +
+						    $("<tr/>").attr("class", "list_"+i.toString()).appendTo("tbody");
+							$("<td/>").attr({
+								class: "first"+i.toString(),
+								id: json[i].filename
+							}).html(json[i].filename).appendTo(".list_"+i.toString());			
+							$("<td/>").attr({
+								class: "second"+i.toString(),
+								id: json[i].filename
+							}).html(json[i].filename).appendTo(".list_"+i.toString());
+							$("<td/>").attr({
+								class: "third"+i.toString(),
+								id: json[i].filename
+							}).html(json[i].filename).appendTo(".list_"+i.toString());
+							var contentstr = "<div id=\"zone-bar\"><ul><li><a href=\"#\"><span><h1>Action &nbsp;</h1><em class=\"opener-world\">" +
 							"<img src=\"static/img/downarrow.png\" alt=\"dropdown\" /></em></span></a><ul><li><a href=\"#\" class=\""+i.toString()+
 							"\" id=\"viewfile\">view</a></li><li><a href=\"#\" class=\""+i.toString()+"\" id=\"editfile\">Edit</a></li>" +
 							"<li><a href=\"#\" class=\""+i.toString()+"\" id=\"deletefile\">Delete</a></li><li><a href=\"#\" class=\""+i.toString()+
-							"\" id=\"sharefile\">Share</a></li></ul></li></ul></div></td></tr>";				
+							"\" id=\"sharefile\">Share</a></li></ul></li></ul></div>";
+							$("<td/>").html(contentstr).appendTo(".list_"+i.toString());
+							//contentstr += "<tr><td class=\"first_"+i.toString()+"\" id=\""+json[i].filename+"\">"+ json[i].filename +"</td>";
+							//contentstr += "<td class=\"second_"+i.toString()+"\" id=\""+json[i].createon+"\">"+ json[i].createon +"</td>";
+							//contentstr += "<td class=\"third_"+i.toString()+"\" id=\""+json[i].updateon+"\">"+ json[i].updateon +"</td>";
+							//contentstr += "<td><div id=\"zone-bar\"><ul><li><a href=\"#\"><span><h1>Action &nbsp;</h1><em class=\"opener-world\">" +
+							//"<img src=\"static/img/downarrow.png\" alt=\"dropdown\" /></em></span></a><ul><li><a href=\"#\" class=\""+i.toString()+
+							//"\" id=\"viewfile\">view</a></li><li><a href=\"#\" class=\""+i.toString()+"\" id=\"editfile\">Edit</a></li>" +
+							//"<li><a href=\"#\" class=\""+i.toString()+"\" id=\"deletefile\">Delete</a></li><li><a href=\"#\" class=\""+i.toString()+
+							//"\" id=\"sharefile\">Share</a></li></ul></li></ul></div></td></tr>";				
 						}
-						strtype = 2;
-						$(contentstr).appendTo("tbody");
-						$(endingstr).appendTo(".filelist");
-
-						//$(".filelist").html(headingstr + contentstr + endingstr1 + endingstr2);
+						//$(contentstr).appendTo("tbody");
+						$("<div/>").attr("id", "addfile").appendTo(".filelist");
+						$("<input/>").attr({
+							type:"button",
+							name:"file_upload",
+							id:"file_upload",
+							value:"add file"
+						}).appendTo("#addfile");
 					}
 				}
 				

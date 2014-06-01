@@ -2,9 +2,19 @@
 $(document).on('click','#viewfile', function(){
 	var class_id = this.className;
 	var fileName = $(".first_"+class_id).attr("id");
-	$(".filecontent").load("/manipulatefile?filename="+fileName);
-	$(".editbar").html(fileName);
-	$(".filestatus").html("view only");
+	$.ajax({
+		type:"GET",
+		url:"/manipulatefile",
+		data:{"filename":fileName},
+		dataType:'text',
+		success:function(results){
+			$(".editbar").html(fileName);
+			$(".filecontent").html('loading');
+			$(".filecontent").html(results);
+			$(".filecontent").attr("readonly", true);
+			$(".filestatus").html("View only");
+		}
+	});
 });
 
 // update file content
