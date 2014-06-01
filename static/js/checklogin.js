@@ -138,6 +138,7 @@ $(document).ready(function(){
 				} else {
 					contentstr = "";
 					if (json[0] == "empty"){			 
+<<<<<<< HEAD
 						$("<div/>").attr("id", "addfile").appendTo(".filelist");
 						$("<input/>").attr({
 							type:"button",
@@ -145,6 +146,10 @@ $(document).ready(function(){
 							id:"file_upload",
 							value:"add file"
 						}).appendTo("#addfile");
+=======
+						strtype = 1;
+						$(endingstr).appendTo(".filelist");
+>>>>>>> 1f115e13e028ed2b57cb328288e2db723fb6259b
 					} else {
 						for(var i=0; i<json.length; i++){
 						    $("<tr/>").attr("class", "list_"+i.toString()).appendTo("tbody");
@@ -175,6 +180,7 @@ $(document).ready(function(){
 							//"<li><a href=\"#\" class=\""+i.toString()+"\" id=\"deletefile\">Delete</a></li><li><a href=\"#\" class=\""+i.toString()+
 							//"\" id=\"sharefile\">Share</a></li></ul></li></ul></div></td></tr>";				
 						}
+<<<<<<< HEAD
 						//$(contentstr).appendTo("tbody");
 						$("<div/>").attr("id", "addfile").appendTo(".filelist");
 						$("<input/>").attr({
@@ -183,11 +189,14 @@ $(document).ready(function(){
 							id:"file_upload",
 							value:"add file"
 						}).appendTo("#addfile");
+=======
+						strtype = 2;
+						$(contentstr).appendTo("tbody");
+						$(endingstr).appendTo(".filelist");
+>>>>>>> 1f115e13e028ed2b57cb328288e2db723fb6259b
 					}
 				}
-				
-				
 			}
 		});
-}
+	}
 });
