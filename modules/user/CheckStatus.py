@@ -1,19 +1,19 @@
 #==========================================================================================================================
 # import python modules
-import logging, argparse, ConfigParser
-import web, os, platform, ctypes
-import hashlib
-import shutil
+import web,
 import json
-import datetime
+
+import CheckSession
 
 #==========================================================================================================================
-# CheckLogin class checks if already logged in
-class CheckLogin:
-    global session
+# CheckStatus class check user's login status
+class CheckStatus:
+	
+	self.sess = CheckSession()
+	
     def GET(self):
         web.header('Content-Type','application/json')
-        if session.logged_in == False:
+        if self.sess.getSession() == False:
             return json.dumps({'r':0})
         else:
-            return json.dumps({'r':1,'un':session.username})
+            return json.dumps({'r':1,'un':self.sess.getUsername()})
