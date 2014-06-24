@@ -1,0 +1,15 @@
+# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
+1-800-268-6195
+sscanf(optarg, "%x", &value)  sscanf("i am 18", "%s %s %d", str1, str2, &d)
+
+getopt(argc, argv, "b:a::cd:")
+
+memset(buffer, 0, sizeof(buffer))
+
+snprintf(toname, strlen(name)+strlen("??:")+1, "??:%s", name);
+
+CISCO_STRTOU32()
+
+"string": 字符串常量存放在static区域，如果让它赋给指针，该指针不能释放
+

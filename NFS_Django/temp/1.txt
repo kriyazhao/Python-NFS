@@ -1,0 +1,3 @@
+
+'l2vpn.bd-group', 'l2vpn.bd-name', 'l2vpn.bd-state', 'l2vpn.bd-coupled-state', 'l2vpn.bd-vfi-state', 'l2vpn.bd-pw-
+         neighbor', 'l2vpn.bd-pw-id', 'l2vpn.bd-pw-state'

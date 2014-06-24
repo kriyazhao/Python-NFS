@@ -1,0 +1,22 @@
+proposals:
+
+problems:
+enxr proc crash,
+ timing issue.
+unexpected error
+(e.g.,
+False, PoA2 is not synchronized peer,
+Couldn't find command 'cfgmgr_show_ltrace -v' in output: 'ipc/gl/config/startup)
+
+
+
+1.web app:	
+	- 2 continous failures probabilty very low
+	- if unexpected result found,rerun
+	- statitic data about why certain have crashed.
+
+2.some code can be committed .
+
+
+
+

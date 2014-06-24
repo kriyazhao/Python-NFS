@@ -1,0 +1,295 @@
+<div>%%%%%%%%%%%%%%%%%
+</div><div>%% Before ISSU %%
+</div><div>%%%%%%%%%%%%%%%%%
+</div><div>
+</div><div>***before ISSU, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active 
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn
+</div><div>Thu Nov 10 21:34:37.299 UTC
+</div><div>HA role:        Active
+</div><div>ISSU role:      Primary
+</div><div>L2VPN FSM role: PrimaryActive
+</div><div>
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>***before ISSU, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn standby 
+</div><div>Thu Nov 10 21:35:02.914 UTC
+</div><div>HA role:        Standby
+</div><div>ISSU role:      Primary
+</div><div>L2VPN FSM role: PrimaryStandby
+</div><div>
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>***before ISSU, show process l2vpn_mgr txgroup peer all det location 0/RP0/CPU0 | i pub 
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios# show process l2vpn_mgr txgroup peer all det location 0/RP0/$
+</div><div>ow l2vpn ipc Thu Nov 10 21:39:33.071 UTC
+</div><div>PEER-ID 4, Name 'AIPC-pub L2VPN', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 8, Name 'AIPC-pub L2VPN-AC-PH1', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 9, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 16, Name 'AIPC-pub L2VPN-AC-PH3', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 17, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 21, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 22, Name 'AIPC-pub aipc_hdl-0x10000076200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 29, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios# show process l2vpn_mgr txgroup peer all det location 0/RP1/$
+</div><div>Thu Nov 10 21:40:04.121 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>
+</div><div>
+</div><div>###############
+</div><div>***show l2vpn ipc location 0/RP1/CPU0
+</div><div>
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP0/CPU0
+</div><div>Thu Nov 10 22:07:17.485 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP1/CPU0
+</div><div>Thu Nov 10 22:07:02.579 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>
+</div><div>###############
+</div><div>***show evpn summary 
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show evpn summary location 0/RP0/CPU0 
+</div><div>Thu Nov 10 21:38:24.327 UTC
+</div><div>-----------------------------
+</div><div>Global Information
+</div><div>-----------------------------
+</div><div>Number of EVIs                : 0
+</div><div>Number of Local MAC Routes    : 0
+</div><div>Number of Remote MAC Routes   : 0
+</div><div>Number of Local IMCAST Routes : 0
+</div><div>Number of Remote IMCAST Routes: 0
+</div><div>Number of Internal Labels     : 0
+</div><div>Number of ES Entries          : 0
+</div><div>BGP Router ID                 : ::
+</div><div>BGP ASN                       : Invalid
+</div><div>PBB BSA MAC address           : 0000.0000.0000
+</div><div>Global peering timer          :     45 seconds
+</div><div>Global recovery timer         :     20 seconds
+</div><div>Global programming timer      :   1500 microseconds
+</div><div>Global flushagain timer       :     60 seconds
+</div><div>-----------------------------
+</div><div>High Availability Information
+</div><div>-----------------------------
+</div><div>BGP EOD                       : N
+</div><div>Number of Marked MAC Routes   : 0
+</div><div>Number of Swept MAC Routes    : 0
+</div><div>Number of Marked IMCAST Routes: 0
+</div><div>Number of Swept IMCAST Routes : 0
+</div><div>
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show evpn summary location 0/RP1/CPU0 
+</div><div>Thu Nov 10 21:37:31.675 UTC
+</div><div>-----------------------------
+</div><div>Global Information
+</div><div>-----------------------------
+</div><div>Number of EVIs                : 0
+</div><div>Number of Local MAC Routes    : 0
+</div><div>Number of Remote MAC Routes   : 0
+</div><div>Number of Local IMCAST Routes : 0
+</div><div>Number of Remote IMCAST Routes: 0
+</div><div>Number of Internal Labels     : 0
+</div><div>Number of ES Entries          : 0
+</div><div>BGP Router ID                 : ::
+</div><div>BGP ASN                       : Invalid
+</div><div>PBB BSA MAC address           : 0000.0000.0000
+</div><div>Global peering timer          :     45 seconds
+</div><div>Global recovery timer         :     20 seconds
+</div><div>Global programming timer      :   1500 microseconds
+</div><div>Global flushagain timer       :     60 seconds
+</div><div>-----------------------------
+</div><div>High Availability Information
+</div><div>-----------------------------
+</div><div>BGP EOD                       : N
+</div><div>Number of Marked MAC Routes   : 0
+</div><div>Number of Swept MAC Routes    : 0
+</div><div>Number of Marked IMCAST Routes: 0
+</div><div>Number of Swept IMCAST Routes : 0
+</div><div>
+</div><div>
+</div><div>
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>%% Before ISSU and l2vpn restart %%
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>------------------------------------------------------------------------------------------------------	
+</div><div>***before ISSU and l2vpn restart, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn 
+</div><div>Thu Nov 10 22:03:02.811 UTC
+</div><div>HA role:        Active
+</div><div>ISSU role:      Primary
+</div><div>L2VPN FSM role: PrimaryActive
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------ 
+</div><div>***before ISSU and l2vpn restart, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn  standby 
+</div><div>Thu Nov 10 22:03:21.399 UTC
+</div><div>HA role:        Standby
+</div><div>ISSU role:      Primary
+</div><div>L2VPN FSM role: PrimaryStandby
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>***before ISSU and l2vpn restart, show process l2vpn_mgr txgroup peer all det location 0/RP0/CPU0 | i pub
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show process l2vpn_mgr txgroup peer all det location 0/RP0/C$
+</div><div>Thu Nov 10 22:13:55.281 UTC
+</div><div>PEER-ID 4, Name 'AIPC-pub L2VPN', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 8, Name 'AIPC-pub L2VPN-AC-PH1', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 9, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 10, Name 'AIPC-pub aipc_hdl-0x1000000e200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 22, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 23, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 24, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+</div><div>PEER-ID 32, Name 'AIPC-pub L2VPN-AC-PH3', TXSEND-ID 2, TXLIST-ID 0
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show process l2vpn_mgr txgroup peer all det location 0/RP1/C$
+</div><div>Thu Nov 10 22:14:11.811 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>
+</div><div>##############
+</div><div>
+</div><div>***show l2vpn ipc location 0/RP0/CPU0
+</div><div>
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP0/CPU0
+</div><div>Thu Nov 10 22:07:17.485 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP1/CPU0
+</div><div>Thu Nov 10 22:07:02.579 UTC
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>
+</div><div>###############
+</div><div>***show evpn summary 
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show evpn summary 
+</div><div>Thu Nov 10 22:15:20.369 UTC
+</div><div>-----------------------------
+</div><div>Global Information
+</div><div>-----------------------------
+</div><div>Number of EVIs                : 0
+</div><div>Number of Local MAC Routes    : 0
+</div><div>Number of Remote MAC Routes   : 0
+</div><div>Number of Local IMCAST Routes : 0
+</div><div>Number of Remote IMCAST Routes: 0
+</div><div>Number of Internal Labels     : 0
+</div><div>Number of ES Entries          : 0
+</div><div>BGP Router ID                 : ::
+</div><div>BGP ASN                       : Invalid
+</div><div>PBB BSA MAC address           : 0000.0000.0000
+</div><div>Global peering timer          :     45 seconds
+</div><div>Global recovery timer         :     20 seconds
+</div><div>Global programming timer      :   1500 microseconds
+</div><div>Global flushagain timer       :     60 seconds
+</div><div>-----------------------------
+</div><div>High Availability Information
+</div><div>-----------------------------
+</div><div>BGP EOD                       : N
+</div><div>Number of Marked MAC Routes   : 0
+</div><div>Number of Swept MAC Routes    : 0
+</div><div>Number of Marked IMCAST Routes: 0
+</div><div>Number of Swept IMCAST Routes : 0
+</div><div>RP/0/RP0/CPU0:ios#
+</div><div>
+</div><div>
+</div><div>
+</div><div>RP/0/RP0/CPU0:ios#show evpn summary location 0/RP1/CPU0 
+</div><div>Thu Nov 10 22:15:55.535 UTC
+</div><div>-----------------------------
+</div><div>Global Information
+</div><div>-----------------------------
+</div><div>Number of EVIs                : 0
+</div><div>Number of Local MAC Routes    : 0
+</div><div>Number of Remote MAC Routes   : 0
+</div><div>Number of Local IMCAST Routes : 0
+</div><div>Number of Remote IMCAST Routes: 0
+</div><div>Number of Internal Labels     : 0
+</div><div>Number of ES Entries          : 0
+</div><div>BGP Router ID                 : ::
+</div><div>BGP ASN                       : Invalid
+</div><div>PBB BSA MAC address           : 0000.0000.0000
+</div><div>Global peering timer          :     45 seconds
+</div><div>Global recovery timer         :     20 seconds
+</div><div>Global programming timer      :   1500 microseconds
+</div><div>Global flushagain timer       :     60 seconds
+</div><div>-----------------------------
+</div><div>High Availability Information
+</div><div>-----------------------------
+</div><div>BGP EOD                       : N
+</div><div>Number of Marked MAC Routes   : 0
+</div><div>Number of Swept MAC Routes    : 0
+</div><div>Number of Marked IMCAST Routes: 0
+</div><div>Number of Swept IMCAST Routes : 0
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>%% Before ISSU and RPFO %%
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>	
+</div><div>before ISSU and FPFO, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active 
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>before ISSU and FPFO, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>before ISSU and FPFO, show process l2vpn_mgr txgroup peer all det location 0/1/CPU0 | i pub 
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>show l2vpn ipc location 0/1/CPU0
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>show evpn summary 
+</div><div>
+</div><div>
+</div><div>------------------------------------------------------------------------------------------------------
+</div><div>
+</div><div>
+</div><div>%%%%%%%%%%%%%%%%%
+</div><div>%% During Load %%
+</div><div>%%%%%%%%%%%%%%%%%
+</div><div>
+</div><div>
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>%% During Load and l2vpn restart %%
+</div><div>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>%%%%%%%%%%%%%%%%
+</div><div>%% During Run %%
+</div><div>%%%%%%%%%%%%%%%%</div>

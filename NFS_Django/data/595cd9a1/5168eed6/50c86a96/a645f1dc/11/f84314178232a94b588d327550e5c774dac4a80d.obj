@@ -1,0 +1,295 @@
+%%%%%%%%%%%%%%%%%
+%% Before ISSU %%
+%%%%%%%%%%%%%%%%%
+
+***before ISSU, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active 
+
+RP/0/RP0/CPU0:ios#show l2vpn
+Thu Nov 10 21:34:37.299 UTC
+HA role:        Active
+ISSU role:      Primary
+L2VPN FSM role: PrimaryActive
+
+
+
+------------------------------------------------------------------------------------------------------
+***before ISSU, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+
+RP/0/RP0/CPU0:ios#show l2vpn standby 
+Thu Nov 10 21:35:02.914 UTC
+HA role:        Standby
+ISSU role:      Primary
+L2VPN FSM role: PrimaryStandby
+
+
+
+------------------------------------------------------------------------------------------------------
+***before ISSU, show process l2vpn_mgr txgroup peer all det location 0/RP0/CPU0 | i pub 
+
+RP/0/RP0/CPU0:ios# show process l2vpn_mgr txgroup peer all det location 0/RP0/$
+ow l2vpn ipc Thu Nov 10 21:39:33.071 UTC
+PEER-ID 4, Name 'AIPC-pub L2VPN', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 8, Name 'AIPC-pub L2VPN-AC-PH1', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 9, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 16, Name 'AIPC-pub L2VPN-AC-PH3', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 17, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 21, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 22, Name 'AIPC-pub aipc_hdl-0x10000076200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 29, Name 'AIPC-pub aipc_hdl-0x10001048200', TXSEND-ID 2, TXLIST-ID 0
+
+
+RP/0/RP0/CPU0:ios# show process l2vpn_mgr txgroup peer all det location 0/RP1/$
+Thu Nov 10 21:40:04.121 UTC
+RP/0/RP0/CPU0:ios#
+
+
+
+###############
+***show l2vpn ipc location 0/RP1/CPU0
+
+
+
+RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP0/CPU0
+Thu Nov 10 22:07:17.485 UTC
+RP/0/RP0/CPU0:ios#
+
+RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP1/CPU0
+Thu Nov 10 22:07:02.579 UTC
+RP/0/RP0/CPU0:ios#
+
+
+###############
+***show evpn summary 
+
+
+RP/0/RP0/CPU0:ios#show evpn summary location 0/RP0/CPU0 
+Thu Nov 10 21:38:24.327 UTC
+-----------------------------
+Global Information
+-----------------------------
+Number of EVIs                : 0
+Number of Local MAC Routes    : 0
+Number of Remote MAC Routes   : 0
+Number of Local IMCAST Routes : 0
+Number of Remote IMCAST Routes: 0
+Number of Internal Labels     : 0
+Number of ES Entries          : 0
+BGP Router ID                 : ::
+BGP ASN                       : Invalid
+PBB BSA MAC address           : 0000.0000.0000
+Global peering timer          :     45 seconds
+Global recovery timer         :     20 seconds
+Global programming timer      :   1500 microseconds
+Global flushagain timer       :     60 seconds
+-----------------------------
+High Availability Information
+-----------------------------
+BGP EOD                       : N
+Number of Marked MAC Routes   : 0
+Number of Swept MAC Routes    : 0
+Number of Marked IMCAST Routes: 0
+Number of Swept IMCAST Routes : 0
+
+
+
+RP/0/RP0/CPU0:ios#show evpn summary location 0/RP1/CPU0 
+Thu Nov 10 21:37:31.675 UTC
+-----------------------------
+Global Information
+-----------------------------
+Number of EVIs                : 0
+Number of Local MAC Routes    : 0
+Number of Remote MAC Routes   : 0
+Number of Local IMCAST Routes : 0
+Number of Remote IMCAST Routes: 0
+Number of Internal Labels     : 0
+Number of ES Entries          : 0
+BGP Router ID                 : ::
+BGP ASN                       : Invalid
+PBB BSA MAC address           : 0000.0000.0000
+Global peering timer          :     45 seconds
+Global recovery timer         :     20 seconds
+Global programming timer      :   1500 microseconds
+Global flushagain timer       :     60 seconds
+-----------------------------
+High Availability Information
+-----------------------------
+BGP EOD                       : N
+Number of Marked MAC Routes   : 0
+Number of Swept MAC Routes    : 0
+Number of Marked IMCAST Routes: 0
+Number of Swept IMCAST Routes : 0
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Before ISSU and l2vpn restart %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+------------------------------------------------------------------------------------------------------	
+***before ISSU and l2vpn restart, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active
+
+RP/0/RP0/CPU0:ios#show l2vpn 
+Thu Nov 10 22:03:02.811 UTC
+HA role:        Active
+ISSU role:      Primary
+L2VPN FSM role: PrimaryActive
+
+
+------------------------------------------------------------------------------------------------------ 
+***before ISSU and l2vpn restart, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+
+RP/0/RP0/CPU0:ios#show l2vpn  standby 
+Thu Nov 10 22:03:21.399 UTC
+HA role:        Standby
+ISSU role:      Primary
+L2VPN FSM role: PrimaryStandby
+
+
+------------------------------------------------------------------------------------------------------
+***before ISSU and l2vpn restart, show process l2vpn_mgr txgroup peer all det location 0/RP0/CPU0 | i pub
+
+
+RP/0/RP0/CPU0:ios#show process l2vpn_mgr txgroup peer all det location 0/RP0/C$
+Thu Nov 10 22:13:55.281 UTC
+PEER-ID 4, Name 'AIPC-pub L2VPN', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 8, Name 'AIPC-pub L2VPN-AC-PH1', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 9, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 10, Name 'AIPC-pub aipc_hdl-0x1000000e200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 22, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 23, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 24, Name 'AIPC-pub aipc_hdl-0x10001024200', TXSEND-ID 2, TXLIST-ID 0
+PEER-ID 32, Name 'AIPC-pub L2VPN-AC-PH3', TXSEND-ID 2, TXLIST-ID 0
+RP/0/RP0/CPU0:ios#
+
+RP/0/RP0/CPU0:ios#show process l2vpn_mgr txgroup peer all det location 0/RP1/C$
+Thu Nov 10 22:14:11.811 UTC
+RP/0/RP0/CPU0:ios#
+
+
+##############
+
+***show l2vpn ipc location 0/RP0/CPU0
+
+
+
+RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP0/CPU0
+Thu Nov 10 22:07:17.485 UTC
+RP/0/RP0/CPU0:ios#
+
+RP/0/RP0/CPU0:ios#show l2vpn ipc location 0/RP1/CPU0
+Thu Nov 10 22:07:02.579 UTC
+RP/0/RP0/CPU0:ios#
+
+
+###############
+***show evpn summary 
+
+
+RP/0/RP0/CPU0:ios#show evpn summary 
+Thu Nov 10 22:15:20.369 UTC
+-----------------------------
+Global Information
+-----------------------------
+Number of EVIs                : 0
+Number of Local MAC Routes    : 0
+Number of Remote MAC Routes   : 0
+Number of Local IMCAST Routes : 0
+Number of Remote IMCAST Routes: 0
+Number of Internal Labels     : 0
+Number of ES Entries          : 0
+BGP Router ID                 : ::
+BGP ASN                       : Invalid
+PBB BSA MAC address           : 0000.0000.0000
+Global peering timer          :     45 seconds
+Global recovery timer         :     20 seconds
+Global programming timer      :   1500 microseconds
+Global flushagain timer       :     60 seconds
+-----------------------------
+High Availability Information
+-----------------------------
+BGP EOD                       : N
+Number of Marked MAC Routes   : 0
+Number of Swept MAC Routes    : 0
+Number of Marked IMCAST Routes: 0
+Number of Swept IMCAST Routes : 0
+RP/0/RP0/CPU0:ios#
+
+
+
+RP/0/RP0/CPU0:ios#show evpn summary location 0/RP1/CPU0 
+Thu Nov 10 22:15:55.535 UTC
+-----------------------------
+Global Information
+-----------------------------
+Number of EVIs                : 0
+Number of Local MAC Routes    : 0
+Number of Remote MAC Routes   : 0
+Number of Local IMCAST Routes : 0
+Number of Remote IMCAST Routes: 0
+Number of Internal Labels     : 0
+Number of ES Entries          : 0
+BGP Router ID                 : ::
+BGP ASN                       : Invalid
+PBB BSA MAC address           : 0000.0000.0000
+Global peering timer          :     45 seconds
+Global recovery timer         :     20 seconds
+Global programming timer      :   1500 microseconds
+Global flushagain timer       :     60 seconds
+-----------------------------
+High Availability Information
+-----------------------------
+BGP EOD                       : N
+Number of Marked MAC Routes   : 0
+Number of Swept MAC Routes    : 0
+Number of Marked IMCAST Routes: 0
+Number of Swept IMCAST Routes : 0
+
+------------------------------------------------------------------------------------------------------
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Before ISSU and RPFO %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+before ISSU and FPFO, check RP0 HA role: Active; ISSU role: Primary; proc FSM: Primary Active 
+
+------------------------------------------------------------------------------------------------------
+before ISSU and FPFO, check RP1 HA role: Standby; ISSU role: Primary; proc FSM: Primary Standby
+
+------------------------------------------------------------------------------------------------------
+before ISSU and FPFO, show process l2vpn_mgr txgroup peer all det location 0/1/CPU0 | i pub 
+
+
+------------------------------------------------------------------------------------------------------
+show l2vpn ipc location 0/1/CPU0
+
+
+------------------------------------------------------------------------------------------------------
+show evpn summary 
+
+
+------------------------------------------------------------------------------------------------------
+
+
+%%%%%%%%%%%%%%%%%
+%% During Load %%
+%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% During Load and l2vpn restart %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%
+%% During Run %%
+%%%%%%%%%%%%%%%%

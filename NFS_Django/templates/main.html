@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>GNU Cloud File System</title>
+<link rel="stylesheet" href="static/css/style.css" media="screen" type="text/css" />
+<link rel="stylesheet" href="static/css/jquery-te-1.4.0.css" media="screen" type="text/css" />
+<link rel="stylesheet" href="static/css/uploadify.css" media="screen" type="text/css" />
+<link rel="stylesheet" href="static/css/jquery.dataTables.min.css" media="screen" type="text/css" />
+<link rel="stylesheet" href="static/css/jquery-ui-1.10.4.custom.min.css" media="screen" type="text/css" />
+<script src="static/js/jquery-1.9.1.min.js"></script>
+<script src="static/js/donetyping.js"></script>
+<script src="static/js/popup.js"></script>
+<script src="static/js/fileupload2.js"></script>
+<script src="static/js/filerequest.js"></script>
+<script src="static/js/filerequest2.js"></script>
+<script src="static/js/jquery-te-1.4.0.min.js"></script>
+<script src="static/js/jquery.cookie.js"></script>
+<script src="static/js/jquery.dataTables.min.js"></script>
+<script src="static/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="static/js/dropdown.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+   <div class="title">
+    <div class="logo"><img src="static/img/logo.png" width="100px;"></div>
+    <div class="titlename">GNU Cloud File System</div>
+</div>
+<div class="top">
+
+<div class="topleft">
+    <div class="activity">
+        <h1 class="frame_box" style="margin:10px 0 10px 0;">Recent Activities</h1>
+        <div class="activitylog"></div>
+        <div class="viewlog "><a href="#">View more...</a></div>
+
+    </div>
+    <div class="codeentry">
+        <h1 class="frame_box" style="margin:10px 0 30px 0;">Extract file</h1>
+        <form>
+        <input type="text" name="md5" class="md5" placeholder="MD5">
+        <input type="text" name="sha1" class="sha1" placeholder="SHA1">
+        <input type="button" name="extract" class="extract" value="Extract">
+        </form>
+        
+    </div>
+</div>
+	<div class="filelist">
+		<div id="sublist">
+			<ul>
+				<li><a href="#mylist">My Files</a></li>
+				<li><a href="#sharelist">Shared Files</a></li>
+			</ul>
+			<div id="mylist">
+				<div id="upload-create">
+					<div id="file-upload"></div>
+       				<div id="create"><input type="button" name="create" class="create" value="Create"></div>
+				</div>
+				<table id ="mytable" class="reference">
+					<thead>
+						<tr>
+							<th>File name</th>
+							<th>Create on</th>
+							<th>Last update</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div id="sharelist">
+				<div id="upload-create"></div>
+				<table id="mytable2" class="reference2">
+					<thead>
+						<tr>
+							<th>File name</th>
+							<th>Owner</th>
+							<th>Privilege</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="fileview">
+<div class="editbar frame_box">File Name</div><div class="editbar-owner frame_box">Owner Name</div><div class="filestatus frame_box">view file here</div>
+<textarea name="textarea" class="filecontent" rows="10" cols="100"><b>My contents are from <u><span style="color:rgb(0, 148, 133);">TEXTAREA</span></u></b></textarea>
+</textarea>
+<div id="foot">2014-2015 @ GNU Cloud File System   All Right Reserved Contact:<a href="mailto:t.zhao2011@gmail.com">  t.zhao2011@gmail.com</a></div>
+</div>
+
+</body>
+</html>
